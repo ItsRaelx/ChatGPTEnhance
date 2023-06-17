@@ -1,4 +1,3 @@
-# ChatGPTEnhance
 ## Text Processing with OpenAI GPT-3
 
 This Python script performs automated cleanup and enhancement of text files using OpenAI's GPT-3. 
