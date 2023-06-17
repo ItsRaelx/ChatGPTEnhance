@@ -11,7 +11,7 @@ The script reads text files from the `./docs` directory, performs necessary clea
 
 Before running the script, ensure that you have set your OpenAI API key in the `openai.api_key` variable. 
 
-Then, simply run the script with `python script_name.py`.
+Then, simply run the script with `python main.py`.
 
 This script works with text files (.txt extension) in the `./docs` directory.
 
