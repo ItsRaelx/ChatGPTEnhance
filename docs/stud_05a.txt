@@ -1,0 +1,702 @@
+01.06.2023
+
+Algorytmy i Struktury Danych
+Dr hab. Dariusz Barbucha, prof. UMG
+Katedra Systemów Informacyjnych
+Uniwersytet Morski w Gdyni
+V
+
+Tablice symboli
+Drzewa wyszukiwań binarnych, zbalansowane drzewa wyszukiwań, tablice z
+haszowaniem
+
+Ogólne uwagi odnośnie porównywania
+obiektów (w strukturach uporządkowanych)
+Porównywanie zmiennych typu prostego
+int a = 7;
+int b = 15;
+Sprawdzenie, czy a==b ?
+
+if (a==b)
+…
+else
+…
+
+A co przypadku zmiennych typu Integer czy też String?
+
+1
+
+01.06.2023
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Uwaga. Integer oraz String to klasy.
+Porównywanie obiektów
+• Sprawdzenie czy obiekty są równe
+• Sprawdzenie czy dany obiekt jest mniejszy/większy od innego
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+String s1 = new String(„Sopot”);
+String s2 = new String(„Gdynia”);
+Integer x1 = new Integer (12);
+Integer x2 = new Integer (4);
+Student st1 = new Student(43198, „Jan”, „Makowski”);
+Student st2 = new Student(43147, „Barbara”, „Kownacka”);
+
+Czy s1 jest równe s2?
+(podobnie pytamy o x1 i x2 oraz st1 i st2)
+
+class Student
+{
+int nrAlbumu;
+String imie;
+String nazwisko;
+}
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe?
+Co decyduje o tym, że uznamy, że dwa obiekty typu Integer są sobie
+równe?
+Szerzej:
+Co decyduje o tym, że uznamy, że dwa obiekty typu Student są sobie
+równe?
+Jeszcze szerzej:
+Co decyduje o tym, że uznamy, że dwa obiekty dowolnego typu są sobie
+równe?
+
+2
+
+01.06.2023
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe?
+Jeśli x i y są obiektami pewnej klasy:
+• Zwykle nie jest dobrym sposobem: x==y
+• Możemy użyć metody equals()z klasy Object, która jest klasą
+bazową każdej klasy (wtedy nadpisujemy tę metodę, definiując
+szczegóły w swojej klasie)
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe?
+Deklaracja we własnej klasie
+Student
+
+public boolean equals(Student st)
+{
+if (nrAlbumu == st.nrAlbumu)
+return true;
+return false;
+// lub po prosu zamiast tego co powyżej:
+//return (nrAlbumu == st.nrAlbumu)
+}
+
+Wywołanie z innej klasy
+wykorzystującej klasę Student
+
+Student st1 = new Student(43198, „Jan”, „Makowski”);
+Student st2 = new Student(43147, „Barbara”, „Kownacka”);
+System.out.println(„Czy student st1 równa się st2” + st1.equals(st2));
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe? czy dany obiekt jest
+mniejszy/większy od innego?
+Jeśli x i y są obiektami pewnej klasy:
+• Jeśli klasa implementuje interfejs Comparable możemy użyć
+metody compareTo()- metoda zdefiniowana w tym interfejsie.
+Poza sprawdzeniem równości obiektów, sprawdza jeszcze, czy jest
+mniejszy czy większy niż inny obiekt.
+public interface Comparable <T>
+{
+int compareTo (T t);
+}
+
+3
+
+01.06.2023
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe? czy dany obiekt jest
+mniejszy/większy od innego?
+Jeśli x i y są obiektami pewnej klasy:
+compareTo()- metoda zdefiniowana w tym interfejsie, zwraca
+• 0, gdy obiekty są równe
+• > 0, gdy dany obiekt jest większy od obiektu porównywanego
+• < 0, gdy dany obiekt jest mniejszy od obiektu porównywanego
+(w zdefiniowanym porządku)
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe? czy dany obiekt jest
+mniejszy/większy od innego?
+public class Date implements Comparable<Date>
+{
+private int month;
+private int day;
+private int year;
+...
+public boolean equals(Date d)
+{
+if (this.day != d.day ) return false;
+if (this.month != d.month) return false;
+if (this.year != d.year ) return false;
+return true;
+}
+}
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe? czy dany obiekt jest
+mniejszy/większy od innego?
+public class Date implements Comparable<Date>
+{
+private int month;
+private int day;
+private int year;
+...
+public boolean compareTo(Date d)
+{
+…
+}
+}
+
+4
+
+01.06.2023
+
+Ogólne uwagi odnośnie operacji na obiektach
+uporządkowanych
+Porównywanie obiektów, czy obiekty są równe? czy dany obiekt jest
+mniejszy/większy od innego?
+Date date1 = new Date (2017, 12, 31);
+Date date2 = new Date (2019, 02, 25);
+…
+if (date1 == date2) … // generalnie zły pomysł
+if (date1 > date2) … // generalnie zły pomysł
+
+if (date1.equals(date2)) … // ok
+if (date1.compareTo(date2)) … // ok
+
+Tablice symboli
+Tablica symboli (ang. symbol table)
+Podstawową funkcją tablic symboli jest łączenie wartości z kluczem.
+Wstawiając do takiej tabeli parę (klucz, wartość), oczekuje się, że
+stosunkowo łatwo będzie możliwe dla danej wartości klucza wyszukanie
+wartości z nim skojarzonej.
+
+Tablice symboli
+Przykłady
+• Słownik – para (słowo, jego objaśnienie)
+• Indeks w książkach – para (słowo, lista numerów stron)
+• Przeszukiwanie w sieci – para (fraza, lista znalezionych stron)
+• Transakcje – para (id transakcji, szczegóły transakcji)
+
+5
+
+01.06.2023
+
+Tablice symboli
+Opis
+
+Metoda
+
+Konstruktor
+
+ST()
+
+Wstawienie pary (klucz, wartość) do tabeli
+• Gdy klucz już istnieje, następuje nadpisane wartości – czyli
+nie dopuszczamy powtarzania kluczy)
+• Jeśli wartość to null, klucz key należy usunąć z tablicy
+
+void put(Key key, Value val)
+
+Zwróć wartość skojarzoną z podanym kluczem
+• Zwraca null gdy podanego klucza nie ma w tablicy
+
+Value get(Key key)
+
+Usuń klucz wraz z odpowiadającą mu wartością (usuwanie może
+być: leniwe (lazy) lub zachłanne (eager))
+
+void delete (Key key)
+
+Czy jest w tabeli wartość skojarzona z podanym kluczem?
+
+boolean contains (Key key)
+
+Czy tabela jest pusta?
+
+boolean isEmpty()
+
+Zwraca rozmiar tablicy
+
+int size()
+
+Tablice symboli
+Zakładamy, że:
+• W celu uogólnienia struktury danych, implementujemy typy
+generyczne (sparametryzowane).
+public class ST<Key, Value>
+{
+}
+
+• Klucze nie mogą mieć wartości null.
+• Określenie, czy dany klucz znajduje się w tablicy symboli oparte jest
+na równości obiektów (metoda equals()).
+
+Tablice symboli
+Uporządkowane tablice symboli
+• Uporządkowanie wg kluczy
+• W typowych zastosowaniach klucze to obiekty implementujące
+interfejs Comparable, dlatego aby porównać klucze a i b stosujemy
+kod: a.compareTo(b).
+• Można bardziej wydajnie zaimplementować metody put() oraz
+get(), ale również inne:
+• Key min(), Key max()
+• Key floor(Key k), Key ceiling(Key k)
+• int rank (Key k)
+• …
+
+6
+
+01.06.2023
+
+Tablice symboli, uporządkowana tablica
+Opis
+
+Metoda
+
+…
+
+…
+
+Zwraca najmniejszy klucz
+
+Key min()
+
+Zwraca największy klucz
+
+Key max()
+
+Zwraca największy klucz mniejszy lub równy podanemu
+
+Key floor (Key key)
+
+Zwraca najmniejszy klucz większy lub równy podanemu
+
+Key ceiling (Key key)
+
+Zwraca liczbę kluczy mniejszą niż podany
+
+int rank (Key key)
+
+Klucz z pozycji (rank) k
+
+Key select (int k)
+
+Usuwa najmniejszy klucz
+
+void deleteMin()
+
+Usuwa największy klucz
+
+void deleteMax()
+
+Usuwa wskazany klucz
+
+void delete (Key key)
+
+Zwraca liczbę kluczy
+
+int size()
+
+Zwraca liczbę kluczy pomiędzy lo i hi
+
+int size(Key lo, Key hi)
+
+Tablice symboli
+Implementacje
+• Za pomocą tablicy
+• Za pomocą listy powiązanej
+
+dylematy implementacyjne w kontekście złożoności
+
+Tablice symboli
+Przeszukiwanie sekwencyjne klucza w nieuporządkowanej
+tablicy/liście
+Schemat algorytmu
+Sekwencyjnie poruszaj się po tablicy/liście:
+• Jeśli znajdziemy klucz, pobierz (ew. zmień) wartość z nim skojarzoną.
+• Jeśli nie znajdziemy klucza, dodaj nowy element (… ale gdzie?).
+
+7
+
+01.06.2023
+
+Tablice symboli
+
+public class SequentialSearchST<Key, Value> {
+private int n;
+private Node first;
+
+Przeszukiwanie
+sekwencyjne w
+nieuporządkowanej
+tablicy/liście
+Implementacja za pomocą
+listy powiązanej
+
+private class Node {
+private Key key;
+private Value val;
+private Node next;
+public Node(Key key, Value val, Node next) {
+this.key = key;
+this.val = val;
+this.next = next;
+}
+
+}
+public SequentialSearchST()
+{
+}
+…
+}
+
+Tablice symboli
+Przeszukiwanie
+sekwencyjne w
+nieuporządkowanej
+tablicy/liście
+Implementacja za pomocą
+listy powiązanej
+
+…
+public boolean contains(Key key) {
+return get(key) != null;
+}
+public Value get(Key key)
+{
+for (Node x = first; x != null; x = x.next)
+{
+if (key.equals(x.key))
+{
+return x.val;
+}
+}
+return null;
+}
+
+Tablice symboli
+Przeszukiwanie
+sekwencyjne w
+nieuporządkowanej
+tablicy/liście
+Implementacja za pomocą
+listy powiązanej
+
+…
+public void put(Key key, Value val)
+{
+for (Node x = first; x != null; x = x.next)
+{
+if (key.equals(x.key))
+{
+x.val = val;
+return;
+}
+}
+first = new Node(key, val, first);
+n++;
+}
+
+8
+
+01.06.2023
+
+Tablice symboli
+Przeszukiwanie
+sekwencyjne w
+nieuporządkowanej
+tablicy/liście
+Implementacja za pomocą
+listy powiązanej
+
+…
+public void delete(Key key) {
+first = delete(first, key);
+}
+// usun key z listy zaczynającej się w Node x
+public Node delete(Node x, Key key) {
+if (x == null) return null;
+if (key.equals(x.key)) {
+n--;
+return x.next;
+}
+x.next = delete(x.next, key);
+return x;
+}
+
+Tablice symboli
+Przeszukiwanie sekwencyjne w nieuporządkowanej tablicy/liście
+Implementacja
+za pomocą listy
+powiązanej
+
+[SW-2018]
+
+Tablice symboli
+Przeszukiwanie binarne w uporządkowanej tablicy
+Schemat algorytmu
+Zastosuj znany mechanizm poruszania się po uporządkowanej
+tablicy/liście.
+
+9
+
+01.06.2023
+
+Tablice symboli
+Przeszukiwanie binarne w
+uporządkowanej tablicy
+Implementacja za pomocą
+tablicy
+
+public class BinarySearchST
+<Key extends Comparable<Key>, Value> {
+private Key[] keys;
+private Value[] vals;
+private int n = 0;
+public BinarySearchST(int capacity) {
+keys = (Key[]) new Comparable[capacity];
+vals = (Value[]) new Object[capacity];
+}
+…
+}
+
+…
+public boolean contains(Key key) {
+return get(key) != null;
+}
+
+Tablice symboli
+
+public Value get(Key key) {
+if (isEmpty()) return null;
+int i = rank(key);
+if (i < n && keys[i].compareTo(key) == 0)
+return vals[i];
+return null;
+}
+
+Przeszukiwanie binarne w
+uporządkowanej tablicy
+Implementacja za pomocą
+tablicy
+
+public int rank(Key key) {
+int lo = 0, hi = n-1;
+while (lo <= hi) {
+int mid = lo + (hi - lo) / 2;
+int cmp = key.compareTo(keys[mid]);
+if (cmp < 0) hi = mid - 1;
+else if (cmp > 0) lo = mid + 1;
+else return mid;
+}
+return lo;
+}
+
+Tablice symboli
+Przeszukiwanie binarne w
+uporządkowanej tablicy
+Implementacja za pomocą
+tablicy
+
+…
+public void put(Key key, Value val) {
+if (val == null) {
+delete(key);
+return;
+}
+int i = rank(key);
+// key jest już w tablicy
+if (i < n && keys[i].compareTo(key) == 0) {
+vals[i] = val;
+return;
+}
+// wstawiamy nową parę
+if (n == keys.length) resize(2*keys.length);
+
+for (int j = n; j > i; j--)
+keys[j] = keys[j-1];
+vals[j] = vals[j-1];
+}
+keys[i] = key;
+vals[i] = val;
+n++;
+
+{
+
+}
+
+10
+
+01.06.2023
+
+Tablice symboli
+
+…
+public void delete(Key key) {
+if (isEmpty()) return;
+
+Przeszukiwanie binarne w
+uporządkowanej tablicy
+Implementacja za pomocą
+tablicy
+
+int i = rank(key);
+// key nie występuje w tablicy
+if (i == n || keys[i].compareTo(key) != 0) {
+return;
+}
+for (int j = i; j < n-1; j++) {
+keys[j] = keys[j+1];
+vals[j] = vals[j+1];
+}
+n--;
+keys[n] = null;
+vals[n] = null;
+}
+
+Tablice symboli
+Przeszukiwanie binarne w uporządkowanej tablicy
+Implementacja
+za pomocą
+tablicy
+
+[SW-2018]
+
+Tablice symboli
+Opis
+
+Metoda
+
+Tablica symboli
+nieuporządkowana
+
+Tablica symboli
+uporządkowana
+
+Wyszukanie elementu
+
+search()
+
+N
+
+log N
+
+Wstawienie/usunięcie elementu
+
+insert()/delete()
+
+N
+
+Zwraca najmniejszy/największy klucz
+
+min()/max()
+
+N
+
+1
+
+Zwraca największy/najmniejszy klucz
+mniejszy/większy lub równy
+podanemu
+
+floor()/ceiling()
+
+N
+
+log N
+
+Zwraca liczbę kluczy mniejszą niż
+podany
+
+rank()
+
+N
+
+log N
+
+Klucz z pozycji (rank) k
+
+select()
+
+N
+
+1
+
+N
+
+11
+
+01.06.2023
+
+Tablice symboli
+Implementacja
+Przeszukiwanie sekwencyjne w
+tablicy symboli (lista powiązana
+nieuporządkowana)
+Przeszukiwanie binarne w
+tablicy symboli (tablica
+uporządkowana)
+
+WORST CASE
+Wyszukanie
+
+WORST CASE
+Wstawienie
+
+AVG CASE
+Wyszukanie
+
+AVG CASE
+Wstawienie
+
+N
+
+N
+
+N/2
+
+N
+
+Porównanie
+kluczy
+equals()
+
+log N
+
+N
+
+log N
+
+N/2
+
+compareTo()
+
+Czy można bardziej wydajnie zaimplementować obie operacje?
+Odp. TAK, wymaga połączenia wydajności wyszukiwania binarnego z elastycznością struktur
+powiązanych:
+
+-> drzewa wyszukiwań binarnych, drzewa zbalansowane
+-> tablice z haszowaniem
+
+12
+
+

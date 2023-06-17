@@ -1,0 +1,599 @@
+01.06.2023
+
+Abstrakcyjne typy/struktury danych
+Abstrakcyjny Typ Danych (ang. abstract data type – ADT) – typ
+danych, którego reprezentacja jest ukryta przed klientem.
+Abstrakcyjna Struktura Danych - struktura zdefiniowana przez zestaw
+operacji, które można wykonać na danych, nie wnikając w ich sposób
+implementacji.
+
+Abstrakcyjne typy/struktury danych
+Abstrakcyjna Struktura Danych - struktura zdefiniowana przez zestaw
+operacji, które można wykonać na danych, nie wnikając w ich sposób
+implementacji.
+
+enque()
+
+Kolejka
+Kolejka (ang. Queue)
+Struktura danych przechowująca obiekty, funkcjonująca na zasadzie
+FIFO (First In First Out).
+Analogia do „tradycyjnej” kolejki osób przed okienkiem pocztowym,
+samochodów przed punktem poboru opłat na autostradzie, itp.:
+• Nowo przybyły osobnik ustawiany jest na koniec kolejki.
+• Do obsługi podchodzi zawsze osobnik znajdujący się na początku
+kolejki (czyli najdłużej czekający w kolejce), tym samym opuszczając
+kolejkę.
+
+deque()
+
+1
+
+01.06.2023
+
+enque()
+
+Kolejka
+Interfejs klasy Kolejka:
+Opis
+
+Metoda
+
+Konstruktor, utworzenie pustej kolejki:
+
+Kolejka(), inaczej: Queue()
+
+Dodanie elementu do kolejki (na koniec):
+
+dodajDoKolejki(), inaczej: enqueue()
+
+Pobranie elementu z kolejki (z początku):
+
+pobierzZKolejki(), inaczej: dequeue()
+
+Liczba elementów w kolejce:
+
+rozmiar(), inaczej: size()
+
+Sprawdzenie, czy kolejka jest pusta:
+
+czyPusta(), inaczej: isEmpty()
+
+deque()
+
+Kolejka
+Implementacje:
+• Za pomocą listy z dowiązaniami
+• Za pomocą tablicy
+
+Kolejka
+Implementacja za pomocą listy
+?
+
+[SW-2018]
+
+2
+
+01.06.2023
+
+Kolejka
+Implementacja za pomocą listy:
+• Każdy element umieszczany w kolejce ma postać:
+private class Node {
+Item item;
+Node next;
+}
+
+• Kolejka posiada:
+• głowę – head lub first (wskaźnik do pierwszego elementu) – początek kolejki
+• ogon – tail lub last (wskaźnik do elementu ostatniego) – koniec kolejki
+
+Kolejka
+Implementacja za pomocą listy:
+• enqueue() – nowy element wstawiamy na koniec listy (za
+dotychczasowy last)
+• dequeue() – zwracamy element z początku (wskazywanego
+dotychczas przez first, po wykonaniu operacji wskaźnik first będzie
+wskazywał na obecny drugi element)
+
+[SW-2018]
+
+Kolejka
+Implementacja za pomocą listy:
+public class Queue <Item> {
+private Node first;
+private Node last;
+private int N;
+private class Node {
+Item item;
+Node next;
+
+}
+…
+
+}
+
+3
+
+01.06.2023
+
+public class Queue
+{
+private Node first, last;
+
+Kolejka
+
+private class Node {
+String item;
+Node next;
+}
+
+Implementacja za pomocą listy:
+• Interfejs:
+
+public boolean isEmpty() {
+return first == null;
+}
+
+Kolejka()
+void enqueue(Item item)
+Item dequeue()
+int size()
+boolean isEmpty()
+
+public void enqueue(String item) {
+Node oldlast = last;
+last = new Node();
+last.item = item;
+last.next = null;
+if (isEmpty()) first = last;
+else oldlast.next = last;
+}
+public String dequeue() {
+String item = first.item;
+first = first.next;
+if (isEmpty()) last = null;
+return item;
+}
+}
+
+Kolejka
+Implementacja za pomocą listy:
+• Interfejs:
+Queue()
+void enqueue(Item item)
+Item dequeue()
+int size()
+boolean isEmpty()
+-> laboratorium
+
+Kolejka
+Implementacja za pomocą tablicy
+?
+• enqueue()
+• dequeue()
+
+[SW-2018]
+
+4
+
+01.06.2023
+
+Kolejka
+Implementacja za pomocą tablicy:
+• Mamy tablicę Q[] do przechowywana elementów N elementów.
+• enqueue(): dodaj nowy element na pozycję Q[tail] (Q[last]) (ew.
+tail+1).
+• dequeue(): pobierz/usuń element z pozycji Q [head] (Q[first]).
+• Zmodyfikuj head and tail.
+
+[SW-2018]
+
+Kolejka
+Implementacja za pomocą
+tablicy
+Konieczność znajomości z góry
+rozmiaru kolejki,
+Problemy:
+• overflow – przy dodawaniu
+kolejnego elementu na listę
+• underflow – przy pobieraniu
+elementów z kolejki
+
+• Zmiana rozmiaru tablicy
+[SW-2018]
+
+push()
+
+pop()
+
+Stos
+Stos (ang. Stack)
+Struktura danych przechowująca obiekty, funkcjonująca na zasadzie
+LIFO (Last In First Out)
+Analogia do „tradycyjnego” stosu np. dokumentów na biurku, listów
+elektronicznych wyświetlonych w programie pocztowym, itp.:
+• Nowy element kładziony jest na wierzch istniejącego stosu.
+• Do obsługi/analizy brany jest element ze szczytu stosu (czyli najkrócej
+przebywający na stosie), tym samym opuszczając stos.
+
+5
+
+01.06.2023
+
+push()
+
+pop()
+
+Stos
+Interfejs klasy Stos:
+Opis
+
+Metoda
+
+Konstruktor:
+
+Stos(), inaczej: Stack()
+
+Położenie elementu na stos (na górę): poloz(), inaczej: push()
+Pobranie elementu ze stosu (z góry):
+
+zdejmij(), inaczej: pop()
+
+Pobranie rozmiaru stosu:
+
+rozmiar(), inaczej: size()
+
+Sprawdzenie, czy stos jest pusty:
+
+czyPusty(), inaczej: isEmpty()
+
+Stos
+Implementacje:
+• Za pomocą listy z dowiązaniami
+• Za pomocą tablicy
+
+Stos
+Implementacja za pomocą listy
+?
+
+[SW-2018]
+
+6
+
+01.06.2023
+
+Stos
+Implementacja za pomocą listy:
+• Każdy element umieszczany na stosie ma postać:
+private class Node {
+Item item;
+Node next;
+}
+
+• Stos posiada:
+• głowę – head lub first (wskaźnik do pierwszego elementu)
+
+Stos
+Implementacja za pomocą listy:
+• push() – nowy element wstawiamy na początek listy (element
+dotychczas wskazywany przez first stanie się drugi, a first będzie
+wskazywało na element wstawiony)
+• pop() – zwracamy element z początku (wskazywanego dotychczas
+przez first, po wykonaniu operacji wskaźnik first będzie wskazywał na
+obecny drugi element)
+
+[SW-2018]
+
+Stos
+Implementacja za pomocą listy:
+public class Stos <Item> {
+private Node first;
+private int N;
+private class Node {
+Item item;
+Node next;
+
+}
+…
+
+}
+
+7
+
+01.06.2023
+
+Stos
+Implementacja za pomocą listy:
+• Interfejs:
+• Stack()
+• void push(Item item)
+• Item pop()
+• int getSize()
+• boolean isEmpty()
+
+-> laboratorium
+
+public class Stack
+{
+private Node first = null;
+
+Stos
+
+private class Node {
+// jak poprzednio
+}
+
+Implementacja za pomocą listy:
+• Interfejs:
+
+public boolean isEmpty() {
+return first == null;
+}
+
+• Stack()
+• void push(Item item)
+• Item pop()
+• int getSize()
+• boolean isEmpty()
+
+public void push(String item) {
+Node oldfirst = first;
+first = new Node();
+first.item = item;
+first.next = oldfirst;
+}
+public String pop() {
+String item = first.item;
+first = first.next;
+return item;
+}
+}
+
+Stos
+Implementacja za pomocą tablicy
+?
+• push()
+• pop()
+
+[SW-2018]
+
+8
+
+01.06.2023
+
+Stos
+Implementacja za pomocą tablicy
+• Wykorzystujemy tablicę S[] do przechowywana N elementów.
+• push(): dodajemy nowy element na pozycję S[N].
+• pop(): zdejmujemy/usuwamy element z S[N-1].
+
+[SW-2018]
+
+Stos
+Implementacja za pomocą tablicy
+Konieczność znajomości z góry rozmiaru stosu,
+Problemy:
+• overflow – przy dodawaniu kolejnego elementu na stos
+• underflow – przy pobieraniu elementów ze stosu
+
+• Zmiana rozmiaru tablicy
+
+[SW-2018]
+
+Kolejka/Stos
+Implementacja za pomocą tablicy
+Zmiana rozmiaru tablicy
+Stos:
+• push(): jeśli tablica pełna -> zwiększ rozmiar dwukrotnie.
+• pop(): jeśli tablica wypełniona w ¼ -> zmniejsz rozmiar tablicy o
+połowę.
+Kolejka
+• enqueue(), dequeue(): ?
+
+9
+
+01.06.2023
+
+Kolejka/Stos
+Parametryzowanie
+kolejki/stosu:
+Stos/kolejka tekstów, liczb całkowitych, znaków …
+(osobne struktury)
+
+Stos obiektów (Item)
+
+Kolejka/Stos
+
+public class Stack
+{
+private Node first = null;
+
+Parametryzowanie
+kolejki/stosu:
+
+public class Stack<Item>
+{
+private Node first = null;
+
+private class Node {
+String item;
+Node next;
+}
+
+private class Node {
+Item item;
+Node next;
+}
+
+public boolean isEmpty() {
+return first == null;
+}
+
+public boolean isEmpty() {
+return first == null;
+}
+
+public void push(String item) {
+Node oldfirst = first;
+first = new Node();
+first.item = item;
+first.next = oldfirst;
+}
+
+public void push(Item item) {
+Node oldfirst = first;
+first = new Node();
+first.item = item;
+first.next = oldfirst;
+}
+
+public String pop() {
+String item = first.item;
+first = first.next;
+return item;
+}
+
+public Item pop() {
+Item item = first.item;
+first = first.next;
+return item;
+}
+
+}
+
+}
+
+Stos
+Zastosowania stosu:
+• Interpretacja wyrażeń w kompilatorach.
+• Operacja Undo w edytorach tekstu
+• Przycisk Back w przeglądarkach
+• Implementacja rekurencji
+
+10
+
+01.06.2023
+
+Stos
+Przykład. Interpretacja wyrażeń w kompilatorach.
+Algorytm Jana Łukasiewicza (jeden stos wspólny dla wartości oraz operatorów)
+Wejście: wyrażenie, np. (1((23+)(45*)*)+), notacja postfix
+Obserwacja: Nawiasy są zbędne -> 123+*45**+ (odwrotna notacja polska ONP – ang. Polish
+reverse notation)
+Analizujemy od lewej po jednym elemencie (liczba, ogranicznik, itp.). Gdy napotkamy:
+• Wartość: dodaj ją na stos wartości
+• Operator: zdejmij ze stosu odpowiednią dla danego operatora liczbę argumentów, wykonaj na
+nich obliczenia, a uzyskany wynik połóż na stos.
+Jeśli badane wyrażenie nie zostało wyczerpane – powtarzamy, a jeśli tak - wartość znajdująca się
+na stosie jest wynikiem końcowym.
+A jak przekształcić wyrażenie do postaci ONP?
+
+Stos/Kolejka
+Złożoność czasowa operacji na kolejce i stosie
+Kolejka/stos:
+• Implementacja listowa: operacje dodania i usunięcia nie zależą od
+wielkości kolekcji (złożoność O(1))
+• Implementacja tablicowa: operacje dodania i usunięcia mogą
+wymagać zwiększenia/zmniejszenia tablicy (złożoność O(n))
+
+Wielozbiór
+Wielozbiór (ang. Bag)
+Struktura danych (kolekcja) umożliwia zapisywanie elementów do
+struktury i przechodzenie po nich.
+Nie obsługuje usuwania elementów.
+Można sprawdzić, czy wielozbiór jest pusty oraz określić liczbę jego
+elementów.
+
+11
+
+01.06.2023
+
+Wielozbiór
+Interfejs klasy Wielozbior:
+Opis
+
+Metoda
+
+Konstruktor:
+
+Wielozbior(), inaczej: Bag()
+
+Dodanie elementu:
+
+dodaj(), inaczej: add()
+
+Liczba elementów w wielozbiorze:
+
+rozmiar(), inaczej: size()
+
+Sprawdzenie, czy wielozbior jest pusty:
+
+czyPusty(), inaczej: isEmpty()
+
+Wielozbiór
+Implementacje:
+• Za pomocą listy z dowiązaniami
+• Za pomocą tablicy
+
+-> do ćwiczeń własnych
+
+Implementacje struktur danych w Javie
+Java collections library
+Interfejs List
+java.util.List – do przechowywania ciągu elementów.
+• List()
+• boolean isEmpty()
+• int size()
+• void add(Item item)
+• Item get(int index)
+• Item remove(int index)
+• boolean contains(Item item)
+• Iterator<Item> iterator
+
+12
+
+01.06.2023
+
+Implementacje struktur danych w Javie
+Java collections library
+Interfejs List
+java.util.List – do przechowywania ciągu elementów.
+Implementacje:
+• java.util.ArrayList – wykorzystuje tablicę zmiennej długości
+• java.util.LinkedList – wykorzystuje listę powiązaną.
+
+Implementacje struktur danych w Javie
+Przykład
+static ArrayList<Student> lista = new ArrayList<Student>();
+…
+Lista.add(new Student(34901, „Jan”, „Marczak”));
+Lista.add(new Student(34902, „Karol”, „Tarno”));
+…
+lista.remove(1);
+…
+lista.size();
+
+class Student {
+int nrAlbumu;
+String imie;
+String nazwisko;
+}
+
+Implementacje struktur danych w Javie
+• Java.util.Vector
+• java.util.Stack
+• java.util.Queue
+
+Kluczowe pytanie:
+co jest interfejsem, a co implementacją?
+
+13
+
+01.06.2023
+
+Podsumowanie
+
+14
+
+

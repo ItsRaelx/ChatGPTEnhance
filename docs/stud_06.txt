@@ -1,0 +1,458 @@
+01.06.2023
+
+Algorytmy i Struktury Danych
+Dr hab. Dariusz Barbucha, prof. UMG
+Katedra Systemów Informacyjnych
+Uniwersytet Morski w Gdyni
+VI
+
+Grafy
+Grafy nieskierowane i skierowane
+
+Zagadnienia
+Graf G = (V, E), gdzie V – zbiór wierzchołków, a E – zbiór krawędzi.
+
+1
+
+01.06.2023
+
+Zagadnienia
+Graf może być:
+nieskierowany
+
+skierowany
+
+Graf nieskierowany
+Ścieżka – sekwencja wierzchołków
+połączonych krawędziami.
+Cykl – ścieżka, której początkiem i końcem
+jest ten sam wierzchołek.
+Dwa wierzchołki są połączone
+jeśli istnieje ścieżka pomiędzy nimi.
+[SW-2018]
+
+Graf nieskierowany
+Długość ścieżki lub cyklu – liczba
+krawędzi wchodzących w ich skład.
+Graf jest spójny jeśli istnieje ścieżka z
+każdego wierzchołka do każdego
+innego wierzchołka grafu.
+Stopień wierzchołka v – liczba krawędzi
+połączonych z wierzchołkiem v
+[SW-2018]
+
+2
+
+01.06.2023
+
+Graf nieskierowany
+Drzewo – to acykliczny graf spójny.
+Drzewo rozpinające dla grafu
+spójnego to podgraf składający się z
+wszystkich wierzchołków grafu i
+będący jednym drzewem.
+
+[SW-2018]
+
+Graf nieskierowany
+Opis
+
+Metoda
+
+Konstruktor, konstruuje graf o liczbie wierzchołków V
+
+Graph(int V)
+
+Dodaje do grafu krawędź łączącą wierzchołki v i w
+
+void addEdge(int v, int w)
+
+Zwraca wierzchołki połączone z v
+
+Iterable<Integer> adj(int v)
+
+Zwraca liczbę wierzchołków
+
+int V()
+
+Zwraca liczbę krawędzi
+
+int E()
+
+Reprezentacje grafu
+Przerywnik: Iteratory, Kolekcje z możliwością iterowania
+W wielu aplikacjach zależy nam na przejściu (iterowaniu) przez całą
+kolekcję, czyli dotarciu po kolei do każdego elementu i wykonaniu
+pewnych operacji, niezależnie jak taka kolekcja jest zorganizowana.
+Interfejs Iterable
+(ma metodę, która zwraca Iterator)
+public interface Iterable<Item>
+{
+Iterator<Item> iterator();
+}
+
+public interface Iterator<Item>
+{
+boolean hasNext();
+Item next();
+void remove();
+}
+
+3
+
+01.06.2023
+
+Reprezentacje grafu
+Przerywnik: Iteratory, Kolekcje z możliwością iterowania
+import java.util.Iterator;
+public class Stack<Item>
+implements Iterable<Item>
+{
+…
+}
+
+import java.util.Iterator;
+public class Stack<Item>
+implements Iterable<Item>
+{
+…
+}
+
+Stack<String> stack = new Stack<String>();
+
+Stack<String> stack = new Stack<String>();
+
+for (String s : stack)
+System.out.println(s);
+
+Iterator<String> i = stack.iterator();
+while (i.hasNext())
+{
+String s = i.next();
+System.out.println(s);
+}
+
+Reprezentacje grafu
+• W postaci tablicy krawędzi
+• W postacie macierzy sąsiedztwa (ang. adjacency matrix)
+• W postaci tablicy list sąsiedztwa
+
+Reprezentacje grafu
+W postaci tablicy krawędzi
+Oznacza to, że pamiętamy wszystkie pary: (i, j) ϵ E
+
+[SW-2018]
+
+4
+
+01.06.2023
+
+Reprezentacje grafu
+W postaci macierzy sąsiedztwa
+Tworzymy dwuwymiarową tablicę n x n, gdzie n – liczba wierzchołków.
+Wartościami tablicy są:
+• 1 (istnieje krawędź łącząca wierzchołki odpowiadające numerowi
+wiersza i kolumny, odpowiednio)
+• 0 (krawędź taka nie istnieje)
+Ew. zamiast 1 i 0 możemy pamiętać wartość typu boolean.
+
+Reprezentacje grafu
+W postaci macierzy sąsiedztwa
+
+[SW-2018]
+
+Reprezentacje grafu
+W postaci tablicy list sąsiedztwa
+Pamiętamy tablicę jednowymiarową o wymiarze równym liczbie
+wierzchołków.
+Dla każdego wierzchołka v ϵ V pamiętamy listę wierzchołków, z którymi
+połączony jest wierzchołek v.
+
+5
+
+01.06.2023
+
+Reprezentacje grafu
+W postaci tablicy list sąsiedztwa
+
+[SW-2018]
+
+Reprezentacje grafu
+
+public class Graph
+{
+private int V;
+private Bag<Integer>[] adj;
+
+W postaci tablicy list sąsiedztwa
+
+public Graph(int V) {
+this.V = V;
+adj = (Bag<Integer>[]) new Bag[V];
+for (int v = 0; v < V; v++)
+adj[v] = new Bag<Integer>();
+}
+public void addEdge(int v, int w) {
+adj[v].add(w);
+adj[w].add(v);
+}
+public Iterable<Integer> adj(int v) {
+return adj[v];
+}
+}
+
+Przeszukiwanie grafu
+Jak przeszukać graf?
+• Przeszukiwanie w głąb (ang. depth-first search - DFS)
+• Przeszukiwanie wszerz (ang. breadth-first search - BFS)
+
+6
+
+01.06.2023
+
+Przeszukiwanie grafu
+Przeszukiwanie w głąb
+Idea: zaczerpnięta ze strategii wędrowania po labiryncie, gdzie
+wierzchołki odpowiadają rozwidleniom dróg, a krawędzie - przejściom
+między rozwidleniami dróg.
+
+[SW-2018]
+
+Przeszukiwanie grafu
+Przeszukiwanie w głąb
+Szkic algorytmu:
+Startując z pewnego wierzchołka s, aby odwiedzić dowolny wierzchołek
+v:
+• Zaznacz wierzchołek v jako odwiedzony
+• Rekurencyjnie odwiedź wszystkie niezaznaczone wierzchołki
+połączone z v
+
+public class DepthFirstPaths
+
+Przeszukiwanie grafu { private boolean[] marked;
+private int[] edgeTo;
+private int s;
+
+Przeszukiwanie w głąb
+
+public DepthFirstPaths(Graph G, int s) {
+// znajdz wierzchołki połączone z s
+dfs(G, s);
+}
+
+• marked[v] == true –
+gdy v połączone jest z s
+• edgeTo[v] – poprzedni
+wierzchołek na ścieżce z s do v
+
+private void dfs(Graph G, int v)
+{
+marked[v] = true;
+for (int w : G.adj(v))
+if (!marked[w])
+{
+dfs(G, w);
+edgeTo[w] = v;
+}
+}
+}
+
+7
+
+01.06.2023
+
+Przeszukiwanie grafu
+Przeszukiwanie w głąb
+
+[SW-2018]
+
+Przeszukiwanie grafu
+Przeszukiwanie wszerz
+Idea: wędrowanie po labiryncie, ale nie przez
+jednego człowieka (jak w DFS), ale przez grupę
+osób wyruszających w różnych kierunkach.
+
+[SW-2018]
+
+Przeszukiwanie grafu
+Przeszukiwanie wszerz
+Pytanie:
+Czy dla danego grafu i źródłowego wierzchołka s istnieje ścieżka z s do
+danego wierzchołka? Jeśli tak, znajdź najkrótszą ścieżkę.
+Aby znaleźć najkrótszą ścieżkę z s do v, należy zacząć w s i sprawdzić,
+czy v znajduje się wśród wierzchołków, do których można dotrzeć
+poprzez jedną krawędź, następnie poszukać v wśród wierzchołków
+dostępnych z s przez dwie krawędzie, itd.
+
+8
+
+01.06.2023
+
+Przeszukiwanie grafu
+Przeszukiwanie wszerz
+Szkic algorytmu:
+Startując z pewnego wierzchołka s, aby odwiedzić dowolny wierzchołek
+v:
+• Dodaj s do kolejki (FIFO) i zaznacz s jako odwiedzony.
+• Powtarzaj aż kolejka stanie się pusta:
+• Usuń najwcześniej dodany wierzchołek v
+• Dodaj każdy z nieodwiedzonych sąsiadów v do kolejki i zaznacz je
+jako odwiedzone
+
+Przeszukiwanie grafu
+Przeszukiwanie wszerz
+Kolejność przeglądania
+wierzchołków?
+
+public class BreadthFirstPaths
+{
+private boolean[] marked;
+private int[] edgeTo;
+private int[] distTo;
+…
+private void bfs(Graph G, int s) {
+Queue<Integer> q = new Queue<Integer>();
+q.enqueue(s);
+marked[s] = true;
+distTo[s] = 0;
+while (!q.isEmpty()) {
+int v = q.dequeue();
+for (int w : G.adj(v)) {
+if (!marked[w]) {
+q.enqueue(w);
+marked[w] = true;
+edgeTo[w] = v;
+distTo[w] = distTo[v] + 1;
+}
+}
+}
+}
+}
+
+Graf skierowany
+Graf, w którym krawędzie mają charakter skierowany.
+
+9
+
+01.06.2023
+
+Graf skierowany
+Opis
+
+Metoda
+
+Konstruktor, konstruuje graf o liczbie wierzchołków V
+
+Digraph(int V)
+
+Dodaje do grafu krawędź skierowaną łączącą prowadzącą od v
+do w
+
+void addEdge(int v, int w)
+
+Zwraca wierzchołki wychodzące z v
+
+Iterable<Integer> adj(int v)
+
+Zwraca liczbę wierzchołków
+
+int V()
+
+Zwraca liczbę krawędzi
+
+int E()
+
+Reprezentacje grafu skierowanego
+• W postaci tablicy krawędzi
+• W postacie macierzy sąsiedztwa (ang. adjacency matrix)
+• W postaci tablicy list sąsiedztwa
+
+Reprezentacje grafu skierowanego
+W postaci tablicy krawędzi
+
+Tak było w przypadku grafu
+nieskierowanego
+
+A jak będzie w przypadku
+grafu skierowanego ???
+
+???
+
+[SW-2018]
+
+10
+
+01.06.2023
+
+Reprezentacje grafu skierowanego
+W postaci macierzy sąsiedztwa
+
+Tak było w przypadku grafu
+nieskierowanego
+
+A jak będzie w przypadku
+grafu skierowanego ???
+
+???
+
+[SW-2018]
+
+Reprezentacje grafu skierowanego
+Przypadek grafu
+skierowanego
+
+W postaci tablicy list sąsiedztwa
+
+[SW-2018]
+
+Reprezentacje grafu
+
+public class Digraph
+{
+private final int V;
+private Bag<Integer>[] adj;
+
+W postaci tablicy list sąsiedztwa
+
+public Graph(int V) {
+this.V = V;
+adj = (Bag<Integer>[]) new Bag[V];
+for (int v = 0; v < V; v++)
+adj[v] = new Bag<Integer>();
+}
+public void addEdge(int v, int w) {
+adj[v].add(w);
+adj[w].add(v);
+}
+public Iterable<Integer> adj(int v) {
+return adj[v];
+}
+
+}
+
+11
+
+01.06.2023
+
+Przeszukiwanie grafu skierowanego
+Przeszukiwanie w głąb
+Dokładnie tak samo jak dla grafu nieskierowanego
+(dlaczego?)
+
+Przeszukiwanie grafu skierowanego
+Przeszukiwanie wszerz
+Dokładnie tak samo jak dla grafu nieskierowanego
+(dlaczego?)
+
+Zagadnienia grafowe
+Wybrane typowe zagadnienia grafowe
+• Znajdź drzewo rozpinające?
+• Czy istnieje ścieżka pomiędzy wierzchołkami v i w?
+• Znajdź najkrótszą ścieżkę między wierzchołkami v i w?
+• Czy w grafie znajduje się cykl?
+• Czy w grafie znajduje się cykl, który obejmuje wszystkie wierzchołki
+dokładnie jeden raz?
+
+12
+
+

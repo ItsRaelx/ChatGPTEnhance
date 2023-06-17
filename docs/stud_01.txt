@@ -1,0 +1,1245 @@
+01.06.2023
+
+Algorytmy i struktury danych
+Dr hab. Dariusz Barbucha, prof. UMG
+Katedra Systemów Informacyjnych
+Uniwersytet Morski w Gdyni
+e-mail: d.barbucha@umg.edu.pl
+I
+
+O przedmiocie
+
+O przedmiocie
+Platforma
+ILIAS: ilias.umg.edu.pl
+Kurs: Algorytmy i Struktury Danych, 2022/2023
+Hasło: …
+
+1
+
+01.06.2023
+
+O przedmiocie
+Najogólniej
+Wykład poświęcony jest przede wszystkim algorytmicznym podejściom
+do efektywnego rozwiązywania problemów na komputerze.
+Kluczowe elementy obejmują dobór „właściwych”:
+1. Algorytmu, czyli sposobu rozwiązania
+2. Struktury danych, czyli sposobu przechowywania i organizowania
+danych, umożliwiającego wykonywanie operacji na nich, jak dostęp
+do danych, modyfikacja danych, itp.
+
+O przedmiocie
+Celem przedmiotu jest przedstawienie i dyskusja wybranych zagadnień
+związanych z:
+• Podstawami analizy algorytmów, czyli mając algorytm, należy określić co on
+robi i jak efektywnie to robi (poprawność, złożoność obliczeniowa)
+• Wybranymi technikami projektowania algorytmów, czyli mając zadanie
+obliczeniowe, należy zaprojektować/dobrać poprawny i efektywny
+algorytm rozwiązujący to zadanie
+• Wybranymi algorytmami do rozwiązania ważnych zadań (wyszukiwanie,
+sortowanie, itp.)
+• Podstawowymi strukturami danych, ich implementacjami i wykorzystaniem
+(tablice, listy, stosy, kolejki, drzewa, grafy, itp.)
+•…
+
+O przedmiocie
+Dlaczego warto poznać podstawy algorytmy i struktur danych?
+• Dzięki algorytmom i ich zapisowi możemy w sposób dosyć formalny
+mówić o zachowaniu programów implementowanych w różnych
+językach programowania.
+• Dobry algorytm i odpowiednia struktura danych są warunkiem
+powstania dobrego programu
+
+2
+
+01.06.2023
+
+Literatura
+Literatura podstawowa
+• [CLRS-2018] T.H. Cormen, C.E. Leiserson, R.L. Rivest, C. Stein.
+Wprowadzenie do algorytmów. PWN, Warszawa, 2018 (pierwsze
+wydanie: 1990).
+• [BDR-2018] L. Banachowski, K. Diks, W. Rytter. Algorytmy i struktury
+danych. WNT, Warszawa, 2018 (pierwsze wydanie: 1996).
+• [SW-2018] R. Sedgewick, K. Wayne. Algorytmy. Wyd. IV, Helion,
+Gliwice, 2018.
+
+Literatura
+Literatura uzupełniająca
+• A.V. Aho, J.E. Hopcroft, J.D. Ullman. Projektowanie i analiza
+algorytmów. Helion, Gliwice, 2003.
+• N. Wirth. Algorytmy + Struktury Danych = Programy. WNT,
+Warszawa, 1989.
+• D.E. Knuth. Sztuka programowania, tom I–III. WNT, Warszawa, 2002.
+• D. Harel. Rzecz o istocie informatyki. Algorytmika. WNT, Warszawa,
+1992.
+• J. Bentley. Perełki programowania. Helion, Gliwice, 2012.
+
+Prowadzący i zasady zaliczania
+PROWADZĄCY:
+• Dr hab. Dariusz Barbucha, prof. UMG, Katedra Systemów Informacyjnych
+UMG (koordynator przedmiotu, wykład + laboratorium), pok. F-204, e-mail:
+d.barbucha@umg.edu.pl
+• Dr Arkadiusz Mirakowski, Katedra Systemów Informacyjnych UMG
+(laboratorium)
+• Dr hab. inż. Włodzimierz Filipowicz, prof. UMG, Katedra Systemów
+Informacyjnych UMG (laboratorium), pok. F-105, e-mail:
+w.filipowicz@wznj.umg.edu.pl
+Zaliczenie PRZEDMIOTU:
+zaliczenie wykładu (50%) + zaliczenie laboratorium (50%)
+
+3
+
+01.06.2023
+
+Materiały
+Z uwagi na bardzo duży walor merytoryczny i dydaktyczny, do
+przygotowania wykładu wykorzystano część materiałów dostępnych w
+R. Sedgewick, K. Wayne. Algorytmy. Wyd. IV, Helion, Gliwice, 2018
++ materiały pomocnicze do tej książki,
+oznaczone na slajdach jako [SW-2018].
+
+Analiza algorytmów
+
+Zagadnienia
+• Czym jest algorytm i jak go przedstawiać?
+• Co to znaczy, że algorytm jest dobry?
+• Co obejmuje pojęcie analizy algorytmu?
+• Poprawność algorytmu
+• Złożoność obliczeniowa algorytmu
+
+4
+
+01.06.2023
+
+Algorytmy
+I. Dane jest zadanie
+
+II. Zaprojektuj algorytm
+rozwiązujący zadanie + strukturę
+danych i dokonaj analizy
+III. Dokonaj implementacji
+algorytmu rozwiązującego
+postawione zadanie
+
+Przykłady
+Zadania obliczeniowe do
+wykonania:
+• Mając 10 liczb całkowitych
+oblicz ich sumę
+• Sprawdź czy w ciągu 100
+liczb całkowitych znajduje
+się liczba 51
+• Mając listę 16 miast
+wojewódzkich, posortuj ją
+wg nazwy miasta
+
+Algorytm
+Nieformalnie,
+Algorytm jest pewną ściśle określoną procedurą obliczeniową (ciągiem
+kroków), która dla odpowiednich danych wejściowych „produkuje”
+żądane dane wyjściowe, zwane wynikiem działania algorytmu.
+Stawiając zadanie określamy wymagania dotyczące relacji między
+danymi wejściowymi i wyjściowymi, natomiast algorytm opisuje
+właściwą procedurę obliczeniową, która zapewnia, że relacja ta zostanie
+osiągnięta.
+
+Algorytm
+Specyfikacja algorytmu
+Bardziej formalny zapis tego “co dokładnie algorytm ma zrobić”.
+Elementy specyfikacji algorytmu:
+• Nazwa algorytmu + lista argumentów w nawiasach
+• Wejście (warunek początkowy) – określa typy i dopuszczalne wartości
+poprawnych danych wejściowych
+• Wyjście (warunek końcowy) – określa prawidłowy wynik (typ i
+wartość) jaki ma być zwrócony przez algorytm jako funkcja danych
+wejściowych
+
+5
+
+01.06.2023
+
+Algorytm
+Algorytm możemy przedstawić w postaci:
+• Opisu w języku naturalnym,
+• Schematu blokowego,
+• Pseudokodu,
+•…
+
+Algorytmy
+„Najstarszy” znany/ważny algorytm:
+Algorytm Euklidesa (ok. 300 p.n.e.) wyznaczania największego
+wspólnego dzielnika dla dwóch liczb naturalnych m i n – NWD(m, n)
+Zadanie obliczeniowe:
+Mając dwie liczby naturalne m i n znajdź ich największy wspólny
+dzielnik.
+
+Algorytmy
+Algorytm Euklidesa
+Zapis w języku naturalnym
+Podziel n przez m, niech r będzie resztą z tego dzielenia.
+Jeżeli r = 0 to m jest wynikiem i algorytm zatrzymuje się.
+W przeciwnym przypadku podstaw: n = m, m = r i powtórz procedurę.
+
+6
+
+01.06.2023
+
+Algorytmy
+Algorytm Euklidesa
+Zapis w postaci schematu blokowego
+Schemat blokowy – diagram, na którym
+algorytm jest reprezentowany przez zestaw
+odpowiednich figur geometrycznych,
+połączonych liniami zgodnie z kolejnością
+wykonywania czynności wynikających z
+przyjętego algorytmu rozwiązania zadania.
+
+Algorytmy
+Algorytm Euklidesa
+Zapis w postaci pseudokodu
+Pseudokod – umowna notacja algorytmów
+raczej abstrakcyjna/informacyjna, a nie zapis
+formalny w konkretnym języku programowania
+(brak obsługi błędów, itp.). Z drugiej strony:
+zapis jednoznaczny
+Wygląd podobny do popularnych języków
+programowania (C/C++, Java, Python)
+
+NWD(n, m)
+{
+do
+{
+r = n mod m
+if (r == 0)
+break
+else
+{
+n = m
+m = r
+}
+}
+while (r != 0)
+return m
+}
+
+Algorytm
+Konwencja pseudokodu
+• Zbliżona do zapisu w języku Java
+• „Tradycyjne”, jednoznaczne symbole/opisy dla:
+• Literałów
+• Zmiennych
+• Operatorów
+• Instrukcji przypisania
+• Instrukcji warunkowej if … then … else
+• Instrukcji pętli: for, while, do…while
+• Komentarze: //
+• Pozostałe: funkcja(lista argumentów), return, itp.
+
+7
+
+01.06.2023
+
+Algorytm
+Dlaczego algorytm powinien być dobry?
+Dobry algorytm jest niezbędny do uzyskania dobrego programu.
+ale
+Dobry algorytm nie gwarantuje dobrego programu.
+
+Algorytm
+Nieformalnie, dobry algorytm to algorytm, który:
+• Rozwiązuje poprawnie zadanie dla którego został stworzony
+• Zatrzymuje się w skończonej liczbie kroków
+• Wykonywany wielokrotnie dla tych samych danych daje te same wyniki
+• Rozwiązuje zadanie w rozsądnym czasie, najlepiej: osiąga wynik przy
+możliwie minimalnym nakładzie zasobów: czasu działania i ilości używanej
+pamięci
+• Rozwiązuje różne (wszystkie?) instancje problemu, a nie pojedyncze,
+specyficzne zadanie
+• Jest czytelny/przejrzysty
+•…
+
+Algorytm
+Które cechy dobrego algorytmu są najważniejsze?
+• Poprawność -> całkowita, częściowa
+• Wydajność -> złożoność obliczeniowa
+
+8
+
+01.06.2023
+
+Poprawność algorytmu
+Poprawność algorytmu
+Ogólnie,
+Algorytm jest poprawny, gdy dla każdego egzemplarza problemu
+algorytm zatrzymuje się i daje dobry wynik.
+Czyli rozwiązuje zadany problem obliczeniowy.
+Z drugiej strony, niepoprawny algorytm może się nigdy nie zatrzymać
+lub po zatrzymaniu dać zły wynik.
+
+Poprawność algorytmu
+Poprawność algorytmu
+Algorytm może być całkowicie poprawny lub częściowo poprawny.
+Algorytm jest całkowicie poprawny, gdy dla wszystkich poprawnych
+danych wejściowych (czyli spełniających warunek wejściowy
+specyfikacji):
+• zatrzymuje się po skończonej liczbie kroków (własność stopu),
+• zwraca poprawny wynik, tj. spełniający warunek końcowy specyfikacji.
+
+Poprawność algorytmu
+Poprawność algorytmu
+Algorytm jest częściowo poprawny gdy dla poprawnych danych
+wejściowych jeżeli algorytm zatrzyma się to zwracany jest poprawny
+wynik.
+Czyli częściowa poprawność nie gwarantuje zatrzymania się algorytmu.
+
+9
+
+01.06.2023
+
+Poprawność algorytmu
+Poprawność algorytmu
+Zatem, chcąc sprawdzić czy algorytm jest całkowicie poprawny szukamy
+odpowiedzi na następujące pytania:
+1. Czy algorytm ma własność stopu?
+Zwykle nie tak bardzo skomplikowane
+
+2. Czy zwraca poprawny wynik (jeśli zatrzymuje się)?
+Bardziej skomplikowane, wymaga np. podejścia z wykorzystaniem niezmiennika pętli
+
+Poprawność algorytmu
+Przykład 1
+Specyfikacja algorytmu:
+algorytm(T)
+wejście:
+T – tablica liczb całkowitych
+wyjście:
+liczba naturalna będąca wartością maksymalną
+w tablicy T
+
+algorytm(int[] T)
+{
+int N = T.length()
+x = T[0]
+for (int i=0; i< N; i++)
+{
+if (T[i] > x)
+{
+x = T[i]
+}
+}
+return x
+}
+
+Poprawność algorytmu
+Przykład 2
+Specyfikacja algorytmu:
+algorytm(T)
+wejście:
+T – tablica liczb całkowitych
+wyjście:
+liczba naturalna będąca sumą wartości
+elementów tablicy T
+
+algorytm(int[] T)
+{
+int N = T.length()
+sum = 0
+for (int i=0; i<N; i++)
+{
+sum += T[i];
+}
+return sum
+}
+
+10
+
+01.06.2023
+
+Poprawność algorytmu
+Przykład 2a
+Specyfikacja algorytmu:
+algorytm(T)
+wejście:
+T – tablica liczb całkowitych
+wyjście:
+liczba naturalna będąca sumą wartości
+elementów tablicy T
+
+algorytm(int[] T)
+{
+int N = T.length()
+sum = 0
+i = 0
+while (i< N)
+{
+sum += T[i];
+i++;
+}
+return sum
+}
+
+Poprawność algorytmu
+Przykład 3
+Specyfikacja algorytmu:
+algorytm(T, x)
+wejście:
+T – tablica liczb całkowitych,
+x – liczba całkowita, której szukamy w tablicy
+wyjście:
+liczba naturalna i<N będąca wartością
+indeksu, pod którym w tablicy T występuje
+szukany element x
+lub
+wartość -1 jeśli x nie występuje w tablicy T
+
+algorytm(int[] T, x)
+{
+int N = T.length()
+for (int i=0; i< N; i++)
+{
+if (T[i] == x)
+{
+return i
+}
+}
+return -1
+}
+
+Złożoność obliczeniowa algorytmu
+Przykład 3
+Specyfikacja algorytmu:
+algorytm(T, x)
+wejście:
+T – tablica liczb całkowitych,
+x – liczba całkowita, której szukamy w tablicy
+wyjście:
+liczba naturalna i<N będąca wartością
+indeksu, pod którym w tablicy T występuje
+szukany element x
+lub
+wartość -1 jeśli x nie występuje w tablicy T
+
+algorytm(int[] T, x)
+{
+int N = T.length()
+for (int i=0; i< N; i++)
+{
+if (T[i] == x)
+{
+return i
+}
+}
+return -1
+}
+
+Zajmowaliśmy się: co dany algorytm robi?
+Teraz: Jak to robi i przy jakich zasobach?
+
+11
+
+01.06.2023
+
+Złożoność obliczeniowa algorytmu
+Złożoność obliczeniowa algorytmu definiuje ilość zasobów potrzebnych
+do jego wykonania.
+Podstawowymi zasobami rozważanymi w analizie algorytmów są:
+• Ilość wykorzystywanej pamięci (złożoność pamięciowa)
+• Czas działania (złożoność czasowa)
+
+Złożoność obliczeniowa algorytmu
+Od czego zależy ilość wykorzystywanej pamięci przez algorytm?
+• Od typów danych zmiennych i ich reprezentacji
+• Od struktur danych – ich rodzaju, rozmiaru
+•…
+Typ
+Bajty
+Typ
+Bajty
+boolean
+
+1
+
+int[]
+
+byte
+
+1
+
+double[]
+
+8N
+
+char
+
+2
+
+Date[]
+
+40N
+
+4N
+
+int
+
+4
+
+double[][]
+
+480NM
+
+float
+
+4
+
+long
+
+8
+
+double
+
+8
+
+Złożoność obliczeniowa algorytmu
+Od czego zależy czas działania algorytmu?
+• Od zasobów sprzętowych, systemowych (CPU, pamięć, itp.)
+… ale również m. in. od
+• Rodzaju algorytmu dobranego do problemu (np. sortowanie przez
+wstawianie vs. sortowanie szybkie)
+• Ilości danych wejściowych (sortowanie 10 vs. 1 miliona elementów), …
+czyli od rozmiaru problemu. Zwykle czas działania rośnie wraz z rozmiarem
+problemu.
+• Postaci danych wejściowych (np. stopnia posortowania ciągu wejściowego:
+już uporządkowany vs. porządek losowy)
+
+12
+
+01.06.2023
+
+Złożoność obliczeniowa algorytmu
+Jak mierzyć czas działania algorytmu?
+Manualnie lub automatycznie za pomocą funkcji systemowych dla
+wybranych instancji zależnych od ilości danych, postaci danych, itp.
+• Jak przenieść/uogólnić powyższe obserwacje na inne instancje?
+• O innym rozmiarze
+• O innej postaci
+• …
+
+• Jaką przyjąć miarę?
+
+Złożoność obliczeniowa algorytmu
+Obserwacja:
+Miara szybkości algorytmu powinna być niezależna od języka
+programowania/platformy
+
+Złożoność obliczeniowa algorytmu
+Propozycja użytecznej miary:
+• Zliczenie podstawowych operacji wykonywanych przez algorytm.
+• Uzależnienie tej liczby od rozmiaru problemu
+Ale nie wszystkich operacji, ale tzw. operacji dominujących.
+Operacje dominujące danego algorytmu to takie operacje, których
+liczba jest proporcjonalna do liczby wszystkich operacji wykonanych
+przez cały algorytm.
+
+13
+
+01.06.2023
+
+Złożoność obliczeniowa algorytmu
+W przykładzie 3 operacją dominującą
+nie jest np.
+• Instrukcja przypisania wykonywana
+jednokrotnie
+ale
+Operacją dominującą będzie np.
+• Operacja porównania wykonywana
+wewnątrz pętli
+
+algorytm(int[] T, x)
+{
+int N = T.length()
+for (int i=0; i< N; i++)
+{
+if (T[i] == x)
+{
+return i
+}
+}
+return -1
+}
+
+Złożoność obliczeniowa algorytmu
+Złożoność obliczeniowa algorytmu definiuje ilość zasobów potrzebnych
+do jego wykonania.
+Podstawowymi zasobami rozważanymi w analizie algorytmów są:
+• Czas działania (złożoność czasowa)
+• Ilość wykorzystywanej pamięci (złożoność pamięciowa)
+
+Złożoność obliczeniowa algorytmu
+Zatem, podsumowując
+Jednostki w których mierzymy złożoność:
+• zwykle słowo pamięci maszyny.
+• zwykle wykonanie jednej operacji dominującej.
+Złożoność obliczeniowa algorytmu funkcją funkcję rozmiaru
+wejściowych danych n. Generalnie, im większe rozmiary danych
+wejściowych tym więcej zasobów (czasu, pamięci) jest koniecznych do
+wykonania danego algorytmu.
+
+14
+
+01.06.2023
+
+Złożoność obliczeniowa algorytmu
+• Definicja rozmiaru danych wejściowych zależy istotnie od
+rozważanego problemu
+• Przykłady definicji rozmiaru problemu:
+• sortowanie tablicy: długość tablicy
+• problemy grafowe: ilość węzłów i krawędzi
+• operacje na wielomianach: stopień wielomianu
+• operacje na macierzach: rozmiary macierzy
+• operacje arytmetyczne: całkowita liczba bitów
+
+Złożoność obliczeniowa algorytmu
+• Złożoność czasowa to zależność pomiędzy rozmiarem danych
+wejściowych a liczbą operacji elementarnych (dominujących)
+wykonywanych w trakcie przebiegu algorytmu.
+• Złożoność pamięciowa to zależność pomiędzy rozmiarem danych
+wejściowych a ilością wykorzystanej pamięci.
+
+Analiza przypadków pesymistycznego i
+średniego
+Wyróżnia się:
+• złożoność pesymistyczną (ang. worst-case) – definiowaną jako ilość
+zasobów komputerowych potrzebnych przy „najgorszych” danych
+wejściowych rozmiaru n.
+Złożoność czasowa: jest górną granicą możliwego czasu działania algorytmu
+dla każdych danych wejściowych
+• złożoność oczekiwaną (ang. average-case) – definiowaną jako ilość
+zasobów komputerowych potrzebnych przy „średnich” danych wejściowych
+rozmiaru n.
+Złożoność czasowa: czas działania dla „średnich” danych wejściowych
+(zakładamy, że wszystkie dane wejściowe określonego rozmiaru są równie
+prawdopodobne)
+
+15
+
+01.06.2023
+
+Złożoność obliczeniowa algorytmu
+Łączny czas wykonania T(N):
+Suma iloczynów koszt × częstotliwość dla wszystkich operacji.
+
+• Ustalamy zbiór operacji.
+• Koszty zależą od zasobów maszyny.
+• Częstotliwość wykonania zależy od algorytmu, danych wejściowych.
+
+Złożoność obliczeniowa algorytmu
+int count = 0;
+
+Operacja
+
+for (int i = 0; i < N; i++)
+if (a[i] == 0)
+count++;
+
+Deklaracja zmiennych
+
+Częstość
+wykonania
+2
+
+Instrukcja przypisania
+
+2
+
+Porównanie „<”
+
+N+1
+
+Porównanie „==”
+
+N
+
+Dostęp do elementu tablicy
+
+N
+
+Zwiększenie wartości zmiennej
+
+N do 2N
+
+Złożoność obliczeniowa algorytmu
+int count = 0;
+
+Operacja
+
+for (int i = 0; i < N; i++)
+for (int j = i+1; j < N; j++)
+if (a[i] + a[j] == 0)
+count++;
+
+Deklaracja zmiennych
+Instrukcja przypisania
+
+Częstość
+wykonania
+N+2
+N+2
+
+Porównanie „<”
+
+½*(N+1)(N+2)
+
+Porównanie „==”
+
+½*N(N-1)
+
+Dostęp do elementu tablicy
+
+N(N-1)
+
+Zwiększenie wartości zmiennej
+
+½*N(N-1)
+do N(N-1)
+
+16
+
+01.06.2023
+
+Złożoność obliczeniowa algorytmu
+insert_sort(int[] a)
+{
+int N = a.length;
+for (int i = 0; i < N; i++)
+{
+for (int j = i; j > 0; j--)
+{
+if (a[j] <= a[j-1])
+{
+int swap = a[i];
+a[i] = a[j];
+a[j] = swap;
+}
+else
+break;
+}
+}
+}
+
+Oblicz częstość wykonywania
+operacji w algorytmie sortowania
+
+Złożoność obliczeniowa algorytmu
+Łączny czas wykonania T(N):
+T(N) = c1*A + c2*B + c3*C + c4*D + …
+Częstotliwość operacji i ich koszt
+A = dostęp do tablicy (c1)
+B = porównanie liczb (c2)
+C = zwiększenie zmiennej (c3)
+D = przypisanie zmiennej (c4)
+…
+
+Złożoność obliczeniowa algorytmu
+Przeprowadzając stosowne obliczenia możemy otrzymać dokładną, złożoną
+formułę matematyczną.
+W praktycznej analizie złożoności obliczeniowej istotniejsze jest nie
+posiadanie dokładnej postaci funkcji, a raczej rzędu wielkości funkcji, w
+którym:
+• Zostawiamy dominującą składnik (np. najwyższą potęgę rozmiaru problemu
+w przypadku wielomianu), a ignorujemy te niższego rzędu (np. niższe
+potęgi)
+• Ignorujemy stałe współczynniki
+Przykład: an2+bn+c -> n2
+
+17
+
+01.06.2023
+
+Rząd wielkości funkcji
+Rząd wielkości funkcji (ang. order of growth) służy do opisywania
+(asymptotycznego) czasu działania algorytmu.
+• Określa, jak szybko rośnie funkcja, gdy rośnie argument N
+• Na jego podstawie można, np:
+• scharakteryzować wydajność algorytmu,
+• porównać złożoność dwóch różnych algorytmów.
+
+• Rozważamy jedynie najbardziej znaczący składnik w formule określającej liczbę
+elementarnych kroków, np. an2+bn+c -> n2
+Kiedy dla dostatecznie dużych danych wejściowych liczymy jedynie rząd wielkości
+czasu działania algorytmu, wtedy zajmujemy się asymptotyczną złożonością
+algorytmu. Interesuje nas, jak szybko wzrasta czas działania algorytmu, gdy rozmiar
+danych dąży do nieskończoności algorytmu (asymptotyczny wzrost funkcji).
+
+Notacja asymptotyczna (notacja „Θ”)
+Dla danej funkcji g(n) oznaczamy przez Θ(g(n)) zbiór funkcji
+Θ(g(n)) = {f(n): istnieją dodatnie stałe c1, c2 i n0 takie, że
+0 ≤ c1g(n) ≤ f(n) ≤ c2 g(n) dla wszystkich n≥n0}
+Formalnie f(n) ϵ Θ(g(n)), jednak zazwyczaj piszemy
+f(n) = Θ(g(n)).
+Notacja Θ asymptotycznie ogranicza funkcję
+od góry oraz od dołu.
+
+Notacja asymptotyczna (notacja „O”)
+Dla danej funkcji g(n) oznaczamy przez O(g(n)) zbiór funkcji
+O(g(n)) = {f(n): istnieją dodatnie stałe c i n0 takie, że
+0 ≤ f(n) ≤ cg(n) dla wszystkich n≥n0}
+O(g(n)) zawiera się w Θ(g(n))
+Z notacji O korzystamy po to, by oszacować funkcję
+z góry (asymptotyczna granica górna),
+z dokładnością do stałego współczynnika.
+Notacja O szacuje pesymistyczny czas działania
+algorytmu.
+
+18
+
+01.06.2023
+
+Notacja asymptotyczna (notacja „Ω”)
+Dla danej funkcji g(n) oznaczamy przez Ω(g(n)) zbiór funkcji
+Ω(g(n)) = {f(n): istnieją dodatnie stałe c i n0 takie, że
+0 ≤ cg(n) ≤ f(n) dla wszystkich n≥n0}
+Notacja Ω określa asymptotyczną granicę dolną.
+Szacuje optymistyczny czas działania algorytmu.
+Ω(g(n)) zawiera się w Θ(g(n)).
+
+Notacja asymptotyczna
+Najczęściej stosujemy
+f(n) = O(g(n)),
+co odczytujemy:
+f(n) jest rzędu g(n).
+Przykłady
+f(n) = O(n) - złożoność liniowa
+f(n) = O(2n) - złożoność wykładnicza
+
+Notacja asymptotyczna
+𝑂 1
+𝑂 log𝑛
+𝑂 𝑛
+𝑂 𝑛log𝑛
+𝑂(𝑛2)
+𝑂 2𝑛
+𝑂 𝑛!
+[http://home.agh.edu.pl/~szeliga/dydaktyka/AiSD/Materialy/main-W(Wydajnosc).pdf]
+
+19
+
+01.06.2023
+
+Notacja asymptotyczna
+Większość rozważanych algorytmów ma złożoność czasową rzędu:
+Postać funkcji g(n)
+
+Przykłady algorytmów o podanej złożoności
+
+1
+
+operacje niezależne od rozmiaru zadania, np. przypisanie
+
+log(n) lub log n
+
+algorytmy, w których zadanie o rozmiarze n sprowadzane jest do zadania rozmiaru n/2, plus pewna stała
+liczba działań (np. wyszukiwanie binarne w uporządkowanym ciągu
+
+n
+
+algorytmy, w których wykonywana jest stała liczba działań dla każdego z n elementów (danych
+wejściowych)
+
+n log(n)
+
+algorytmy, w których zadanie o rozmiarze n zostaje sprowadzone do dwóch podzadań rozmiaru n/2, plus
+pewna liczba działań liniowa względem rozmiaru n, potrzebna do wykonania najpierw podzielenia, a
+następnie scalenia rozwiązań podzadań rozmiaru n/2 w rozwiązanie rozmiaru n
+
+n2
+
+algorytmy, w których jest wykonywana pewna stała liczba działań dla każdej pary danych wejściowych
+(podwójna iteracja)
+
+nk
+
+algorytmy o k wzajemnie zagnieżdżonych pętlach
+
+2n
+
+algorytmy, w których jest wykonywana stała liczba działań dla każdego podzbioru danych wejściowych
+
+n!
+
+algorytmy, w których jest wykonywana stała liczba działań dla każdej permutacji danych wejściowych
+
+Notacja asymptotyczna
+Przykłady
+Rząd wielkości
+funkcji
+
+Przykładowy kod
+
+Opis
+
+Przykład
+
+1
+
+a = b + c;
+
+Podstawienie wartości
+wyrażenia
+
+Dodawanie dwóch liczb
+
+log(n) lub log n
+
+while (N > 1)
+{ N = N / 2; ... }
+
+Podział zadania na mniejsze o Przeszukiwanie binarne
+rozmiarze N/2
+
+n
+
+for (int i = 0; i < N; i++)
+{ ... }
+
+Pętla
+
+Znajdź maksimum
+
+n2
+
+for (int i = 0; i < N; i++)
+for (int j = 0; j < N; j++)
+{ ... }
+
+Podwójna pętla
+
+Sprawdź, czy suma liczb
+jest równa 0
+
+2n
+
+Znalezienie wszystkich
+podzbiorów
+
+Złożoność obliczeniowa
+Algorytmy o złożoności wielomianowej przyjęło się nazywać
+efektywnymi (łatwymi) z punktu widzenia złożoności obliczeniowej,
+algorytmy zaś wykładnicze (nie wielomianowe) – nieefektywnymi
+(trudnymi).
+Problemy dla których, prawdopodobnie, nie istnieją wielomianowe
+algorytmy rozwiązania nazywane są problemami NP-trudnymi.
+
+20
+
+01.06.2023
+
+Złożoność obliczeniowa
+Przykłady
+• Wyszukiwanie: sekwencyjne, binarne
+• Problem plecakowy
+• Problem komiwojażera
+• Wieże Hanoi
+•…
+
+Wyszukiwanie elementu na liście
+T - tablica N liczb całkowitych (lub np. tekstów).
+Czy element x (np. 31) należy do tablicy T ?
+
+4
+
+12
+
+9
+
+29
+
+43
+
+21
+
+11
+
+2
+
+Wyszukiwanie elementu na liście
+
+4
+
+12
+
+9
+
+29
+
+43
+
+21
+
+11
+
+2
+
+Algorytm SEARCH(x, T)
+Dla każdego elementu od 1 do N
+Sprawdź, czy x = T[i] ?
+TAK  element znaleziono, stop („tak”)
+NIE  weź następny element
+Jeżeli wyczerpiemy listę nie znajdując elementu,
+to stop („nie”)
+
+21
+
+01.06.2023
+
+Złożoność algorytmu wyszukiwania elementu
+na liście
+Złożoność algorytmu SEARCH wynosi O(N).
+Oznacza to, że istnieje pewna stała K, taka, że algorytm wykonuje się w
+czasie nie dłuższym niż K*N.
+Czas wykonania rośnie więc liniowo.
+
+Wyszukiwanie elementu na liście
+uporządkowanej
+T - tablica N liczb całkowitych (lub np. tekstów) uporządkowana
+rosnąco.
+Czy element x należy do tablicy T ?
+
+2
+
+4
+
+9
+
+11
+
+12
+
+21
+
+29
+
+43
+
+29
+
+43
+
+Wyszukiwanie elementu na liście
+uporządkowanej
+2
+
+4
+
+9
+
+11
+
+12
+
+21
+
+Algorytm BINSEARCH (x, T)
+Jeżeli T jest puste to stop („nie”)
+Wybierz środkowy element tablicy T - s
+x = s  stop („tak”)
+x > s  rozpatrz prawą połowę tablicy
+x < s  rozpatrz lewą połowę tablicy
+
+22
+
+01.06.2023
+
+Złożoność algorytmu wyszukiwania elementu
+na liście uporządkowanej
+W algorytmie BINSEARCH, każde porównanie skraca długość listy
+(rozmiar zadania) o połowę. Zatem największą możliwą liczbę
+porównań można wyznaczyć obliczając, ile razy N można podzielić
+przez 2 zanim otrzymamy 0. Ta liczba to log2N.
+Złożoność algorytmu BINSEARCH wynosi O(logN). Notacja O(.) ukrywa
+stałe czynniki, jest niezależna od liczby danych wejściowych.
+
+Złożoność algorytmu wyszukiwania elementu
+na liście uporządkowanej
+Pesymistyczna liczba porównań dla wyszukiwania
+binarnego:
+N
+
+1+log2N
+
+10
+100
+
+4
+7
+
+1000
+
+10
+
+Milion
+Miliard
+
+20
+30
+
+Miliard miliardów
+
+60
+
+Problem plecakowy
+Dane:
+Skończony zbiór n elementów: 1,2,...n, każdy o określonym rozmiarze si
+i wartości wi  N oraz pojemność plecaka - b.
+Pytanie:
+Które przedmioty należy załadować do plecaka, aby zmaksymalizować
+wartość załadowanych przedmiotów?
+
+23
+
+01.06.2023
+
+Problem plecakowy
+
+n
+
+max  wi xi
+i 1
+
+n
+
+ si xi  b
+i 1
+
+xi  {0,1}
+
+Problem plecakowy
+złożoność obliczeniowa
+Wektor rozwiązania: x = (x1, x2, ..., xn), xi  {0, 1}.
+W najgorszym możliwym przypadku trzeba rozpatrzyć 2n przypadków,
+bo tyle wynosi liczba możliwych rozwiązań.
+Nie istnieje algorytm o złożoności wielomianowej.
+Problem plecakowy jest problemem obliczeniowo trudnym.
+
+Problem komiwojażera
+Dane:
+C = {c1, ..., cn} - zbiór miast,
+odległość dijN między każdą parą miast ci, (cjC).
+Problem:
+Znaleźć najkrótszą drogę, łączącą wszystkie miasta należące do C?
+
+24
+
+01.06.2023
+
+Problem komiwojażera
+Gdańsk (c1)
+d81
+
+Szczecin (c3)
+d12
+
+d23
+
+Białystok (c8)
+
+d78
+
+d34
+
+Poznań (c2)
+
+Warszawa (c7)
+d67
+
+Wrocław (c4)
+
+Lublin (c6)
+
+d45
+
+d56
+d12+d23+...+d78+d81  min (?)
+
+Kraków (c5)
+
+Problem komiwojażera
+złożoność obliczeniowa
+Wszystkich możliwości przejazdu między wszystkimi miastami jest
+n!.
+Dla 25 miast jest to liczba składająca się z 26 cyfr.
+Mając komputer o zdolności wykonywania miliona operacji na
+sekundę, czas obliczeń = 400 milionów lat.
+
+Nie istnieje algorytm wielomianowy dla problemu komiwojażera.
+Problem komiwojażera jest problemem obliczeniowo trudnym.
+
+Wieże Hanoi
+Należy przenieść N
+krążków z A na B,
+być może używając
+pomocniczo C.
+
+A
+
+B
+
+1.
+
+Jednocześnie
+można przenosić
+tylko jeden krążek
+
+2.
+
+W żadnym
+momencie większy
+krążek nie może być
+umieszczony na
+krążku mniejszym.
+
+C
+
+Rozwiązanie:
+AB, AC, BC, AB, CA, CB, AB
+
+25
+
+01.06.2023
+
+Wieże Hanoi
+algorytm
+Algorytm PRZENIEŚ N z A na B używając C
+1. Jeśli N = 1 to wypisz „XY”
+2. W przeciwnym razie (tj. gdy N > 1) wykonaj:
+2.1 wywołaj PRZENIEŚ N-1 z A na C używając B
+2.2 wypisz „XY”
+2.3 wywołaj PRZENIEŚ N-1 z C na B używając A
+3. Wróć
+
+Wieże Hanoi
+złożoność obliczeniowa
+Liczba M(N) pojedynczych przeniesień krążka, wyznaczona przez
+algorytm dla przypadku N krążków wynosi dokładnie 2N-1.
+Zatem złożoność obliczeniowa tego algorytmu wynosi O(2N) – jest to
+złożoność wykładnicza.
+
+Wieże Hanoi
+złożoność obliczeniowa
+Oryginalna wersja tybetańska polegała na przeniesieniu 64 krążków.
+Wynalazcy tej łamigłówki nie byli całkiem oderwani od rzeczywistości,
+gdy oświadczali, że koniec świata nastąpi wtedy, gdy wszystkie krążki
+będą przeniesione.
+1 krążek co 10 sekund - pięć bilionów lat pracy.
+1 milion krążków na sekundę – pół miliona lat.
+
+26
+
+01.06.2023
+
+Podsumowanie
+
+27
+
+
